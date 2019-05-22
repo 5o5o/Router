@@ -15,6 +15,8 @@ CellNode::CellNode()
     {
         x = 0;
         y = 0;
+        xP = 0;
+        yP = 0;
         cost = 0;
         currentCost = 0;
         isvia = false;
@@ -69,4 +71,3 @@ void CellNode:: showCell()
     {
         cout << "(" << x << "," << y << ","<<Ngrid<<")";
     }
-

@@ -14,6 +14,7 @@
 #include "CellNode.hpp"
 #include "linkedList.hpp"
 #include "linkedList.cpp"
+#include "string"
 class RoutingPath
 {
     public:
@@ -21,5 +22,6 @@ class RoutingPath
     double PathCost;
     RoutingPath();
     void showPath();
+	std::string getstringPath();
 };
 #endif /* RoutingPath_hpp */

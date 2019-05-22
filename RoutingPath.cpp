@@ -11,6 +11,7 @@
 #include "CellNode.hpp"
 #include <vector>
 #include <iostream>
+#include <string>
 using namespace std;
 RoutingPath::RoutingPath()
     {
@@ -26,3 +27,14 @@ void RoutingPath::showPath()
         }
         cout << PathCost << endl;
     }
+string RoutingPath::getstringPath()
+{
+	vector <CellNode> targetList = TargetPath.getList();
+	string path ="";
+	for (int i = 0; i < targetList.size(); i++)
+	{
+		path = path + targetList[i].LayerName + "  ("+to_string( targetList[i].xP) + " " + to_string(targetList[i].yP) + ")";
+		path = path + "\n";
+	}
+	return path;
+}

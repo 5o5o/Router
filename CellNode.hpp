@@ -10,11 +10,15 @@
 #define CellNode_hpp
 #include <stdio.h>
 #include <string>
+using namespace std;
+
 class CellNode
 {
 public:
     int x;
     int y;
+	int xP;
+	int yP;
     double cost;
     double currentCost;
     bool isvia;
@@ -24,23 +28,19 @@ public:
     char pathChar;
     int Ngrid;
     bool isobstacle;
-	std::string LayerName;
-	std::string compName;
-	std::string pinName;
+	string LayerName;
+	string compName;
+	string pinName;
 	int RectID;
 	CellNode *uVia;
 	CellNode *dVia;
-	
-    
-    CellNode();
+	CellNode();
     
     CellNode(int cX, int cY, double cC, bool obst);
     
     CellNode(int cX, int cY, double cC, int nG , bool isobs, bool via);
     
     bool isequal(CellNode cell);
-   
-    
     bool operator == (const CellNode& cell);
     void showCell();
     

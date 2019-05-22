@@ -33,6 +33,7 @@ public:
 	void removeFront(Type&);
 	void getFront(Type&);
 	void getBack(Type&);
+	void makeEmpty();
 	std::vector <Type> getList();
 };
 

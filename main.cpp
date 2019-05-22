@@ -1,18 +1,17 @@
 //
 //  main.cpp
-//  DDD222
+//  Demos's DD2 P2
 //
-//  Created by khloud ghattas on 5/21/19.
+//  Created by khloud ghattas on 5/22/19.
 //  Copyright © 2019 khloud ghattas. All rights reserved.
-//
-
-#include <ctime>
+//#include <ctime>
 #include <cstdlib>
 #include <iostream>
 #include <vector>
 #include <cmath>
 #include <set>
 #include <algorithm>
+#include<climits>
 #include "Node.hpp"
 #include "CellNode.hpp"
 #include "Grid.hpp"
@@ -27,454 +26,7 @@ using namespace std;
 
 Maze RoutingMaze;
 int UNIT = 100;
-
-//class CellNode
-//{
-//public:
-//    int x;
-//    int y;
-//    double cost;
-//    double currentCost;
-//    bool isvia;
-//    char viaChar;
-//    bool isvisited;
-//    char obstcaleChar;
-//    char pathChar;
-//    int Ngrid;
-//    bool isobstacle;
-//
-//    CellNode()
-//    {
-//        x = 0;
-//        y = 0;
-//        cost = 0;
-//        currentCost = 0;
-//        isvia = false;
-//        obstcaleChar = '#';
-//        pathChar = '@';
-//        viaChar = 'V';
-//        Ngrid = 0;
-//        isvisited = false;
-//        isobstacle = false;
-//    }
-//    CellNode(int cX, int cY, double cC, bool obst)
-//    {
-//        x = cX;
-//        y = cY;
-//        cost = cC;
-//        currentCost = 0;
-//        isvia = false;
-//        obstcaleChar = '#';
-//        pathChar = '@';
-//        Ngrid = 0;
-//        isvisited = false;
-//        isobstacle = obst;
-//        viaChar = 'V';
-//    }
-//    CellNode(int cX, int cY, double cC, int nG, bool isobs, bool via)
-//    {
-//        x = cX;
-//        y = cY;
-//        cost = cC;
-//        Ngrid = nG;
-//        currentCost = 0;
-//        isvia = false;
-//        obstcaleChar = '#';
-//        pathChar = '@';
-//        viaChar = 'V';
-//        isvisited = false;
-//        isobstacle = false;
-//        isvia = via;
-//    }
-//    bool isequal(CellNode cell)
-//    {
-//        return ((x == cell.x) && (y == cell.y) && Ngrid == cell.Ngrid);
-//
-//    }
-//
-//    bool operator == (const CellNode& cell)
-//    {
-//        return ((x == cell.x) && (y == cell.y) && Ngrid == cell.Ngrid);
-//    }
-//
-//    void showCell()
-//    {
-//        cout << "(" << x << "," << y << "," << Ngrid << ")";
-//    }
-//};
-//class Node
-//{
-//public:
-//    CellNode element;
-//    Node* next;
-//    Node* parent;
-//    Node(CellNode cell)
-//    {
-//        element = cell;
-//    }
-//    ~Node()
-//    {
-//
-//        while (parent != NULL)
-//        {
-//        }
-//    }
-//};
-
-/*class Grid
- {
- public:
- int Width;
- int Height;
- vector <CellNode> CellNodes;
- int layerNumber;
- Grid()
- {
- Width = 0;
- Height = 0;
- initializeCells();
- layerNumber;
- }
- Grid(int W, int H, int lN)
- {
- Width = W;
- Height = H;
- layerNumber = lN;
- initializeCells();
- 
- }
- bool isvalid(CellNode cell)
- {
- return !(cell.isvisited || cell.isobstacle || cell.x >= Width || cell.y >= Height);
- 
- }
- void initializeCells()
- {
- for (int i = 0; i<Width; i++)
- for (int j = 0; j<Height; j++)
- {
- CellNode cell(i, j, layerNumber + 1, layerNumber, false, false);
- CellNodes.push_back(cell);
- }
- 
- CellNodes[13].isobstacle = true;
- CellNodes[14].isobstacle = true;
- CellNodes[45].isobstacle = true;
- CellNodes[46].isobstacle = true;
- CellNodes[55].isobstacle = true;
- CellNodes[56].isobstacle = true;
- }
- void initializeCellsFromUsers(vector <CellNode> cNodes)
- {
- CellNodes = cNodes;
- }
- void Draw()
- {
- cout << "Layer" << layerNumber + 1 << ":" << endl;
- for (size_t i = 0; i < Width; i++)
- cout << "---";
- cout << endl;
- for (int i = 0; i<CellNodes.size(); i++)
- {
- if (CellNodes[i].isobstacle)
- cout << "|" << CellNodes[i].obstcaleChar << "|";
- else if (CellNodes[i].isvia)
- cout << "|" << CellNodes[i].viaChar << "|";
- else
- cout << "|" << CellNodes[i].cost << "|";
- if ((i + 1) % 10 == 0)
- cout << endl;
- }
- for (size_t i = 0; i < Width; i++)
- cout << "---";
- cout << endl;
- }
- void Draw(vector<CellNode> path)
- {
- cout << "\n Layer" << layerNumber + 1 << ":\n";
- for (size_t i = 0; i < Width; i++)
- cout << "---";
- cout << endl;
- for (int i = 0; i<CellNodes.size(); i++)
- {
- bool isPath = false;
- for (int j = 0; j < path.size(); j++)
- if (path[j] == CellNodes[i])
- isPath = true;
- if (isPath)
- cout << "|" << CellNodes[i].pathChar << "|";
- else if (CellNodes[i].isobstacle)
- cout << "|" << CellNodes[i].obstcaleChar << "|";
- else if (CellNodes[i].isvia)
- cout << "|" << CellNodes[i].viaChar << "|";
- else
- cout << "|" << CellNodes[i].cost << "|";
- if ((i + 1) % 10 == 0)
- {
- cout << endl;
- }
- }
- for (size_t i = 0; i < Width; i++)
- cout << "---";
- }
- CellNode getCellNode(int X, int Y)
- {
- int i = (X * Width + Y);
- return  CellNodes[i];
- }
- void setViaCellNode(int X, int Y, bool via)
- {
- int i = (X * Width + Y);
- if (i >= 0 && i < Width*Height)
- CellNodes[i].isvia = via;
- }
- };*/
-/*class RoutingPath
- {
- public:
- linkedList <CellNode> TargetPath;
- double PathCost;
- RoutingPath()
- {
- PathCost = 0;
- }
- void showPath()
- {
- vector <CellNode> targetList = TargetPath.getList();
- for (int i = 0; i < targetList.size(); i++)
- {
- targetList[i].showCell();
- cout << endl;
- }
- cout << PathCost << endl;
- }
- };*/
-/*class Maze
- {
- public:
- int nlayer;
- CellNode cSource;
- CellNode cTarget;
- int nlS, nlT;
- RoutingPath targetRoutePath;
- vector <Grid> Grids;
- Maze()
- {
- nlayer = 1;
- 
- }
- Maze(int ML)
- {
- nlayer = ML;
- initializeMazes();
- }
- void initializeMazes()
- {
- Grid grid(10, 10, 0);
- Grids.push_back(grid);
- }
- void initializeMazesFromUsers(int W, int H, int ML)
- {
- nlayer = ML;
- for (int i = 0; i<ML; i++)
- {
- Grid grid(W, H, i);
- Grids.push_back(grid);
- }
- }
- void DrawMaze()
- {
- for (int i = 0; i< nlayer; i++)
- {
- Grids[i].Draw();
- 
- }
- }
- void DrawMaze(vector<CellNode> path)
- {
- for (int i = 0; i< nlayer; i++)
- {
- Grids[i].Draw(path);
- 
- }
- }
- bool setSource(int X, int Y, int Ngrid)
- {
- cSource = Grids[Ngrid].getCellNode(X, Y);
- nlS = Ngrid;
- return true;
- }
- bool setTarget(int X, int Y, int Ngrid)
- {
- cTarget = Grids[Ngrid].getCellNode(X, Y);
- nlT = Ngrid;
- return true;
- }
- void setVia(int X, int Y)
- {
- for (int i = 0; i<nlayer; i++)
- Grids[i].setViaCellNode(X, Y, true);
- }
- CellNode getCellNode(int X, int Y, int Ngrid)
- {
- return Grids[Ngrid].getCellNode(X, Y);
- }
- 
- RoutingPath findPath_AStar()
- {
- RoutingPath targetPath;
- targetPath = findPath_AStar(cSource, cTarget, nlS, nlT);
- return targetPath;
- }
- 
- RoutingPath findPath_AStar(int X1, int Y1, int N1, int X2, int Y2, int N2)
- {
- RoutingPath targetPath;
- setSource(X1, Y1, N1);
- setSource(X2, Y2, N2);
- return targetPath;
- }
- 
- int getNextLayer(int nL)
- {
- if (nL == 0 && cTarget.Ngrid > 0)
- return nL + 1;
- else if (nL == 1 && cTarget.Ngrid > 1)
- return nL + 1;
- else if (nL == 1 && cTarget.Ngrid < 1)
- return nL - 1;
- else if (nL == 2 && cTarget.Ngrid < 2)
- return nL - 1;
- else
- return nL;
- 
- }
- 
- using NodeSet = std::set<Node*>;
- RoutingPath findPath_AStar(CellNode Source, CellNode Target, int nlS, int nlT)
- {
- RoutingPath targetPath;
- vector<CellNode> closedSet;
- vector<CellNode> openSet;
- NodeSet copenset;
- NodeSet cclosedSet;
- copenset.insert(new Node(Source));
- openSet.push_back(Source);
- CellNode current;
- Node* cCurrent = nullptr;
- vector <int> rD = { 1,-1,0,0,0 };
- vector <int> cD = { 0,0,1,-1,0 };
- int currentCost = 0;
- int SucCost = 0;
- while (!openSet.empty())
- {
- current = openSet[0];
- 
- for (int i = 0; i< openSet.size(); i++)
- {
- if (openSet[i].currentCost < current.currentCost)
- {
- current = openSet[i];
- }
- }
- cCurrent = *copenset.begin();
- for (auto node : copenset) {
- if (node->element == current) {
- cCurrent = node;
- }
- }
- currentCost = current.currentCost;
- closedSet.push_back(current);
- cclosedSet.insert(cCurrent);
- 
- if (current.isequal(Target))
- {
- break;
- }
- 
- openSet.erase(find(openSet.begin(), openSet.end(), current));
- 
- for (int i = 0; i < 5; i++)
- {
- int X = current.x + rD[i];
- int Y = current.y + cD[i];
- bool isViaCell = false;
- if (i == 4) {
- if (!current.isvia)
- continue;
- else
- isViaCell = true;
- }
- if ((X >= 0 && X < Grids[0].Width && Y >= 0 && Y < Grids[0].Height))
- {
- int nL = current.Ngrid;
- if (isViaCell)
- nL = getNextLayer(nL);
- 
- CellNode Neighbour = getCellNode(current.x + rD[i], current.y + cD[i], nL);
- if (Neighbour.isobstacle)
- continue;
- bool isinOpenL = false;
- for (int i = 0; i < openSet.size(); i++)
- {
- if (Neighbour.isequal(openSet[i]))
- {
- Neighbour = openSet[i];
- isinOpenL = true;
- }
- 
- }
- 
- bool isv = false;
- for (int i = 0; i < closedSet.size(); i++)
- {
- if (Neighbour.isequal(closedSet[i]))
- {
- Neighbour = closedSet[i];
- isv = true;
- }
- }
- 
- SucCost = current.currentCost + Neighbour.cost;
- Node* cNeighbor = new Node(Neighbour);
- if (isinOpenL)
- {
- if (SucCost >= Neighbour.currentCost) continue;
- }
- else if (isv && !(Neighbour.isequal(Source)))
- {
- if (SucCost >= Neighbour.currentCost)
- continue;
- closedSet.erase(find(closedSet.begin(), closedSet.end(), Neighbour));
- openSet.push_back(Neighbour);
- cNeighbor->parent = cCurrent;
- copenset.insert(cNeighbor);
- }
- else if (!(Neighbour.isequal(Source)))
- {
- Neighbour.isvisited = true;
- Neighbour.currentCost = SucCost;
- openSet.push_back(Neighbour);
- copenset.insert(cNeighbor);
- }
- cNeighbor->parent = cCurrent;
- 
- }
- }
- 
- }
- 
- // A* algorithim
- while (cCurrent != NULL || cCurrent != nullptr)
- {
- targetRoutePath.TargetPath.addBack(cCurrent->element);
- cCurrent = cCurrent->parent;
- }
- 
- targetRoutePath.PathCost = currentCost;
- return targetRoutePath;
- }
- };*/
+vector<Grid> grids;
 
 class DieArea
 {
@@ -602,7 +154,7 @@ vector<string> getwords(string line)
     int sPos;               //the index of the position
     string nWord;           //to get the next word
     
-        sPos = line.find_first_of(" ");
+    sPos = line.find_first_of(" ");
     int wLength;
     
     while (sPos >= 0)
@@ -924,14 +476,105 @@ void ImportDefFile(string filePath)
     else
         cout << " Could not open the file " << endl;
 }
-int main()
+
+void RoutandExport(string inpFile , string outFile)
 {
-    ImportLefFile("/Users/khloudghattas/Desktop/osu035.lef");
+    vector<string> lineW;
+    ifstream in(inpFile);
+    ofstream out(outFile);
+    if (!in.fail())
+    {
+        string line = "";
+        while (!in.eof())
+        {
+            getline(in, line, '\n');
+            lineW = getwords(line, " ", "\r");
+            
+            if (lineW.size()>0 && lineW[0] == "NETS")
+            {
+                out << line << endl;
+                int netsize = stoi(lineW[1]);
+                for (int n = 0; n < NETs.size(); n++)
+                {
+                    getline(in, line, '\n');
+                    out << line << endl;
+                    for (int r = 0; r < NETs[n].RComps.size(); r++)
+                    {
+                        getline(in, line, '\n');
+                        out << line << endl;
+                    }
+                    for (int r = 0; r < NETs[n].RComps.size()-1 ; r++)
+                    {
+                        CellNode SC; CellNode TC;
+                        for (int i = 0; i <grids.size(); i++)
+                        {
+                            for (int j = 0; j < grids[i].CellNodes.size(); j++)
+                            {
+                                if (grids[i].CellNodes[j].compName == NETs[n].RComps[r].first && grids[i].CellNodes[j].pinName == NETs[n].RComps[r].second)
+                                {
+                                    SC = grids[i].CellNodes[j];
+                                }
+                                if (grids[i].CellNodes[j].compName == NETs[n].RComps[r+1].first && grids[i].CellNodes[j].pinName == NETs[n].RComps[r+1].second)
+                                {
+                                    TC = grids[i].CellNodes[j];
+                                }
+                            }
+                        }
+                        RoutingPath rPath = RoutingMaze.findPath_AStar(SC, TC, SC.Ngrid, TC.Ngrid);
+                        string strPath = rPath.getstringPath();
+                        out << strPath;
+                        
+                    }
+                }
+                
+            }
+            else
+            {
+                out << line << endl;
+            }
+        }
+    }
     
-    ImportDefFile("/Users/khloudghattas/Desktop/cpu_unroute.def");
-    CellNode SC;
-    CellNode TC;
-    vector<Grid> grids;
+}
+
+int main(int argc, char* argv[])
+{
+    string inplefFile = "/Users/khloudghattas/Desktop/osu035.lef";
+    string inpDefFile = "/Users/khloudghattas/Desktop/arbiter_unroute.def";
+    
+    if (argc == 3)
+    {
+        inplefFile = argv[1];
+        inpDefFile = argv[2];
+    }
+    
+    string outDefFile = inpDefFile.substr(0, inpDefFile.find_last_of(".")) + "_Routed.def";
+    
+   // std::clock_t c_start = std::clock();
+    ImportLefFile(inplefFile);
+    
+    ImportDefFile(inpDefFile);
+    CellNode SC; CellNode TC;
+    
+    int tXStep = INT_MAX; int tYStep = INT_MAX;
+    for (int i = 0; i < Tracks.size(); i++)
+    {
+        if (Tracks[i].Direction == "Y")
+        {
+            if (Tracks[i].STEP < tYStep)
+            {
+                tYStep = Tracks[i].STEP;
+            }
+        }
+        if (Tracks[i].Direction == "X")
+        {
+            if (Tracks[i].STEP < tXStep)
+            {
+                tXStep = Tracks[i].STEP;
+            }
+        }
+    }
+    
     for (int i = 0; i < Tracks.size(); i++)
     {
         int W = 1;
@@ -962,44 +605,60 @@ int main()
         int gn = 0;
         for (int j = 0; j < compnents[i].Macro.Pins.size();j++)
         {
-            CellNode cell;
             
-            for (int r = 0; r < compnents[i].Macro.Pins[j].Port.Rect.size(); r++)
+            CellNode cell;
+            int x = 0;
+            int y = 0;
+            int gn = 0;
+            for (int g = 0; g<grids.size(); g++)
+                if (grids[g].layerName == compnents[i].Macro.Pins[j].Port.Metal.Name)
+                {
+                    gn = g;
+                    cell.Ngrid = g; cell.LayerName = compnents[i].Macro.Pins[j].Port.Metal.Name;
+                    cell.compName = compnents[i].compName;
+                    cell.pinName = compnents[i].Macro.Pins[j].Name;
+                    //cell.RectID = r;
+                    break;
+                }
+            int rr = 0; int rrx= compnents[i].Macro.Pins[j].Port.Rect[0].sX; int rry= compnents[i].Macro.Pins[j].Port.Rect[0].sY;
+            for (int r = 1; r < compnents[i].Macro.Pins[j].Port.Rect.size(); r++)
             {
                 
-                int x = 0;
-                int y = 0;
-                int gn = 0;
-                for (int g = 0; g<grids.size(); g++)
-                    if (grids[g].layerName == compnents[i].Macro.Pins[j].Port.Metal.Name)
-                    {
-                        gn = g;
-                        cell.Ngrid = g; cell.LayerName = compnents[i].Macro.Pins[j].Port.Metal.Name;
-                        cell.compName = compnents[i].compName;
-                        cell.pinName = compnents[i].Macro.Pins[j].Name;
-                        cell.RectID = r;
-                        break;
-                    }
-                if (Tracks[gn].Direction == "X")
+                if (rrx < compnents[i].Macro.Pins[j].Port.Rect[r].sX && rry< compnents[i].Macro.Pins[j].Port.Rect[r].sY)
                 {
-                    /*cell.x =(compnents[i].pX + (compnents[i].Macro.Pins[j].Port.Rect[r].eX - compnents[i].Macro.Pins[j].Port.Rect[r].sX) * 100) / Tracks[gn].STEP;
-                     cell.y = (compnents[i].pY + (compnents[i].Macro.Pins[j].Port.Rect[r].eY - compnents[i].Macro.Pins[j].Port.Rect[r].sY) * 100) / 200;*/
-                    cell.x = (compnents[i].pX ) / Tracks[gn].STEP -1;
-                    cell.y = (compnents[i].pY ) / 200 -1;
-                }
-                if (Tracks[gn].Direction == "Y")
-                {
-                    /*cell.y = (compnents[i].pY + (compnents[i].Macro.Pins[j].Port.Rect[r].eY - compnents[i].Macro.Pins[j].Port.Rect[r].sY) * 100) / Tracks[gn].STEP;
-                     cell.x = (compnents[i].pX + (compnents[i].Macro.Pins[j].Port.Rect[r].eX - compnents[i].Macro.Pins[j].Port.Rect[r].sX) * 100) / 160;*/
-                    cell.y = (compnents[i].pY + 100) / Tracks[gn].STEP -1 ;
-                    cell.x = (compnents[i].pX ) / 160 -1;
-                    if (cell.x < 0)
-                        cell.x = 0;
+                    rr = r; rrx = compnents[i].Macro.Pins[j].Port.Rect[r].sX; rry = compnents[i].Macro.Pins[j].Port.Rect[r].sY;
                 }
                 
+                
             }
+            if (Tracks[gn].Direction == "X")
+            {
+                /*cell.x =(compnents[i].pX + (compnents[i].Macro.Pins[j].Port.Rect[r].eX - compnents[i].Macro.Pins[j].Port.Rect[r].sX) * 100) / Tracks[gn].STEP;
+                 cell.y = (compnents[i].pY + (compnents[i].Macro.Pins[j].Port.Rect[r].eY - compnents[i].Macro.Pins[j].Port.Rect[r].sY) * 100) / 200;*/
+                cell.x = (compnents[i].pX) / Tracks[gn].STEP - 1;
+                cell.y = (compnents[i].pY) / tYStep - 1;
+                cell.yP = (compnents[i].pY + (compnents[i].Macro.Pins[j].Port.Rect[rr].sY) * 100);
+                cell.xP = (compnents[i].pX + (compnents[i].Macro.Pins[j].Port.Rect[rr].sX) * 100);
+            }
+            if (Tracks[gn].Direction == "Y")
+            {
+                cell.y = (compnents[i].pY + (compnents[i].Macro.Pins[j].Port.Rect[rr].sY) * 100) / Tracks[gn].STEP;
+                cell.x = (compnents[i].pX + (compnents[i].Macro.Pins[j].Port.Rect[rr].sX) * 100) / tXStep;
+                cell.yP = (compnents[i].pY + (compnents[i].Macro.Pins[j].Port.Rect[rr].sY) * 100);
+                cell.xP = (compnents[i].pX + (compnents[i].Macro.Pins[j].Port.Rect[rr].sX) * 100);
+                /*cell.y = (compnents[i].pY + 100) / Tracks[gn].STEP -1 ;
+                 cell.x = (compnents[i].pX ) / 160 -1;*/
+                if (cell.x < 0)
+                    cell.x = 0;
+            }
+            cell.RectID = rr;
+            
             Cells.push_back(cell);
             //grids[gn].CellNodes[cell.x*grids[gn].Width + cell.y] = cell;
+            /*if (cell.compName == "NAND3X1_4" && cell.pinName == "A")
+             {
+             SC = cell;
+             }*/
         }
     }
     
@@ -1016,32 +675,21 @@ int main()
                     cell = Cells[c];
                 }
             }
-            grids[0].CellNodes[i*grids[0].Width + j] = cell;
+            int indx = i * grids[0].Width + j;
+            grids[0].CellNodes[indx] = cell;
         }
     }
-    /*( NAND3X1_4 A )
-     ( AOI22X1_8 Y )*/
+    
     RoutingMaze.Grids=grids;
     RoutingMaze.nlayer = grids.size();
+    RoutandExport(inpDefFile, outDefFile);
     
-    for (int i = 0; i <grids.size(); i++)
-    {
-        for (int j = 0; j < grids[i].CellNodes.size(); j++)
-        {
-            if (grids[i].CellNodes[j].compName == "NAND3X1_4")
-            {
-                SC = grids[i].CellNodes[j];
-            }
-            if (grids[i].CellNodes[j].compName == "AOI22X1_8")
-            {
-                TC = grids[i].CellNodes[j];
-            }
-        }
-        
-    }
-    RoutingPath rPath = RoutingMaze.findPath_AStar(SC , TC , SC.Ngrid, TC.Ngrid);
-    grids[0].Draw();
-    rPath.showPath();
+    //std::clock_t c_end = std::clock();
+   // double time_elapsed_ms = 1000.0 * (c_end - c_start) / CLOCKS_PER_SEC;
+    
+    cout << "Input Lef File:" << inplefFile<<endl;
+    cout << "Input Def File:" << outDefFile << endl;
+   // cout <<"Time Elapsed: "<< time_elapsed_ms << "sec";
     return 0;
 }
 

@@ -112,6 +112,7 @@ Maze::Maze(int ML)
     using NodeSet = std::set<Node*>;
     RoutingPath Maze::findPath_AStar(CellNode Source, CellNode Target, int nlS, int nlT)
     {
+		targetRoutePath.TargetPath.makeEmpty();
         RoutingPath targetPath;
         vector<CellNode> closedSet;
         vector<CellNode> openSet;
@@ -151,8 +152,15 @@ Maze::Maze(int ML)
                 break;
             }
             
-            openSet.erase(find(openSet.begin(), openSet.end(), current));
-            
+            for(auto set = openSet.begin(); set != openSet.end();)
+            {
+                if (*set == current)
+                {
+                    set = openSet.erase(set);
+                }
+                else set++;
+            }
+         // openSet.erase(find(openSet.begin(), openSet.end(), current));
             for (int i = 0; i < 5; i++)
             {
                 int X = current.x + rD[i];
@@ -164,7 +172,7 @@ Maze::Maze(int ML)
                     else
                         isViaCell = true;
                 }
-                if ((X >= 0 && X < Grids[0].Width && Y >= 0 && Y < Grids[0].Height))
+           if ((X >= 0 && X < Grids[0].Width && Y >= 0 && Y < Grids[0].Height))
                 {
                     int nL = current.Ngrid;
                     if (isViaCell)
@@ -204,7 +212,14 @@ Maze::Maze(int ML)
                     {
                         if (SucCost >= Neighbour.currentCost)
                             continue;
-                        closedSet.erase(find(closedSet.begin(), closedSet.end(), Neighbour));
+                        for(auto set = closedSet.begin(); set != closedSet.end();)
+                        {
+                            if (*set == Neighbour)
+                            {
+                                set = closedSet.erase(set);
+                            }
+                            else set++;
+                        }
                         openSet.push_back(Neighbour);
                         cNeighbor->parent = cCurrent;
                         copenset.insert(cNeighbor);

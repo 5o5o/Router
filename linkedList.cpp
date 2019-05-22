@@ -89,6 +89,14 @@ bool linkedList<Type>::isempty()
 {
 	return count == 0;
 }
+
+template <class Type>
+void linkedList<Type>::makeEmpty()
+{
+	Front = NULL;
+	count = 0;
+}
+
 template <class Type>
 std::vector<Type> linkedList<Type>::getList()
 {
